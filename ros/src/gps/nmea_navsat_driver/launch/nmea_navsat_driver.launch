@@ -1,0 +1,18 @@
+<launch>
+<node pkg="htf_rtk_gps" name="rtk_gps_node"  type="rtk_gps_node" output="screen" respawn="true">
+		<param name="rtk_pub_course_speed" value="/Trimble_rtk_gps/course_speed_can"/>
+		<param name="rtk_pub_GNSS_position_data" value="/Trimble_rtk_gps/GNSS_position_data_can"/>
+		<param name="can_rx_topic" value="/fmData/can_rx_rtk_gps" />
+		<param name="serial_rx_topic" value="/fmData/gps_rx" />
+		<param name="frame_id_pos" value="RTK_GPS" />
+		<param name="frame_id_coursespeed" value="RTK_GPS" />
+	</node>
+
+<node pkg="nmea_navsat_driver" name="nmea_topic_driver" type="nmea_topic_driver" output="screen" respawn="true">
+	<remap from="vtg" to="/Trimble_rtk_gps/course_speed" />
+	<remap from="fix" to="/Trimble_rtk_gps/nav_sat_fix" />
+	<remap from="hdt" to="/Trimble_rtk_gps/hdt" />
+	<remap from="time_reference" to="/Trimble_rtk_gps/time_reference" />
+	<remap from="nmea_sentence" to="/Trimble_rtk_gps/SerialSentence" />
+</node>
+</launch>

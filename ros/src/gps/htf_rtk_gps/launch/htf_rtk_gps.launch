@@ -1,0 +1,35 @@
+<launch>
+<group ns="fmData">
+    <!--node pkg="can_socketcan" name="can_socketcan_node_rtk_gps" type="can_socketcan_node" output="screen" respawn="true">
+        <param name="publisher_topic" value="can_rx_rtk_gps" />	 
+        <param name="subscriber_topic" value="can_tx_rtk_gps" />	
+        <param name="device" value="can1" />	
+   </node-->
+
+	<node pkg="serial_string" name="gps_serial_string_node" type="serial_string_node" output="screen" respawn="true">
+		<param name="publisher_topic" value="/fmData/gps_rx" />	 
+		<param name="subscriber_topic" value="/fmData/gps_tx" />
+		<param name="device" value="/dev/ttyS2" />	
+		<param name="baudrate" value="115200" />
+		<param name="parity" value="odd"/>
+		<param name="termination_character" value="10"/>
+	</node>
+</group>
+<group ns="Sensors">
+	<node pkg="htf_rtk_gps" name="rtk_gps_node"  type="rtk_gps_node" output="screen" respawn="true">
+		<param name="rtk_pub_course_speed" value="/Trimble_rtk_gps/course_speed_can"/>
+		<param name="rtk_pub_GNSS_position_data" value="/Trimble_rtk_gps/GNSS_position_data_can"/>
+		<param name="can_rx_topic" value="/fmData/can_rx_rtk_gps" />
+		<param name="serial_rx_topic" value="/fmData/gps_rx" />
+		<param name="frame_id_pos" value="RTK_GPS" />
+		<param name="frame_id_coursespeed" value="RTK_GPS" />
+	</node>
+</group>
+
+<node pkg="nmea_navsat_driver" name="nmea_topic_driver" type="nmea_topic_driver" output="screen" respawn="true">
+	<remap from="vtg" to="/Trimble_rtk_gps/course_speed" />
+	<remap from="fix" to="/Trimble_rtk_gps/nav_sat_fix" />
+	<remap from="time_reference" to="/Trimble_rtk_gps/time_reference" />
+	<remap from="nmea_sentence" to="/Trimble_rtk_gps/SerialSentence" />
+</node>
+</launch>

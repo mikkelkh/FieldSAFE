@@ -1,0 +1,22 @@
+<launch>
+	<group ns="fmData">
+	    <node pkg="serial_string" name="gps_serial_string_node" type="serial_string_node" output="screen" >
+		<param name="publisher_topic" value="/fmData/gps_rx" />	 
+		<param name="subscriber_topic" value="/fmData/gps_tx" />
+		<param name="device" value="/dev/ttyUSB0" />	
+		<param name="baudrate" value="115200" />
+		<param name="parity" value="odd"/>
+		<param name="termination_character" value="10"/>
+	</node> 			
+	</group>
+
+	<!-- <group ns="Sensors">
+		<node pkg="htf_rtk_gps" name="rtk_gps_node"  type="rtk_gps_node" output="screen" >
+			<param name="rtk_pub_course_speed" value="/Trimble_rtk_gps/course_speed"/>
+			<param name="rtk_pub_GNSS_position_data" value="/Trimble_rtk_gps/GNSS_position_data"/>
+			<param name="serial_rx_topic" value="/fmData/gps_rx" />	
+			<param name="frame_id" value="RTK_GPS" />
+		</node>
+	</group>
+	-->
+</launch>
