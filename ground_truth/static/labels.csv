@@ -1,0 +1,14 @@
+ID,Label,R,G,B
+1,ground,128,128,128
+2,grass,0,255,0
+3,water,0,255,255
+4,vegetation,0,0,255
+5,mannequin_doll,255,0,0
+6,other,255,0,255
+7,building,0,128,128
+8,barrel,128,128,0
+9,gps_marker,255,255,0
+10,undefined,0,0,0
+11,only_in_orthophoto,128,0,128
+12,nontraversable_ground,255,255,255
+13,road,255,128,0
