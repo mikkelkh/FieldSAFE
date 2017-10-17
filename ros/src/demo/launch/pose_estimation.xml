@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+ <launch>
+  <!-- parse GPS nmea messages -->
+	<node pkg="htf_rtk_gps" name="rtk_gps_node"  type="rtk_gps_node" output="screen" respawn="false">
+		<param name="rtk_pub_course_speed" value="/Trimble_rtk_gps/course_speed_can"/>
+		<param name="rtk_pub_GNSS_position_data" value="/Trimble_rtk_gps/GNSS_position_data_can"/>
+		<param name="can_rx_topic" value="/fmData/can_rx_rtk_gps" />
+		<param name="serial_rx_topic" value="/fmData/gps_rx" />
+		<param name="frame_id_pos" value="RTK_GPS" />
+		<param name="frame_id_coursespeed" value="RTK_GPS" />
+	</node>
+	<node pkg="nmea_navsat_driver" name="nmea_topic_driver" type="nmea_topic_driver" output="screen" respawn="false">
+		<remap from="vtg" to="/Trimble_rtk_gps/course_speed" />
+		<remap from="fix" to="/Trimble_rtk_gps/nav_sat_fix" />
+		<remap from="hdt" to="/Trimble_rtk_gps/hdt" />
+		<remap from="time_reference" to="/Trimble_rtk_gps/time_reference" />
+		<remap from="nmea_sentence" to="/Trimble_rtk_gps/SerialSentence" />
+		<param name="useGPStime" value="false" />
+		<param name="time_delay" value="0" />
+		<param name="time_delay_heading" value="0" />
+	</node>
+
+	<!-- convert GPS HDT to odometry msg -->
+	<node pkg="gps_to_odometry" type="gps_hdt_to_odometry_node" name="gps_hdt_to_odometry_node" respawn="false" output="screen">
+		<param name="child_frame" value="RTK_GPS_HEADING" />
+		<param name="covariance_yaw" value="0.0" />
+		<!-- Input -->
+		<remap from="gps/GPHDT" to="Trimble_rtk_gps/hdt" />
+		<!-- Output -->
+		<remap from="gps/odometry" to="Trimble_rtk_gps/odometry" />
+		<remap from="gps/imu" to="Trimble_rtk_gps/imu" />
+	</node>
+
+  <include file="$(find demo)/launch/robot_localization.launch"/>
+
+ </launch>

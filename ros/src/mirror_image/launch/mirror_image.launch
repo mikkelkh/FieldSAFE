@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- Flip thermal camera  -->
+	<node type="mirror_image.py" name="mirror_image" pkg="mirror_image" respawn="true" output="screen">
+		<param name="topicImageIn" value="/FlirA65/image_raw" />
+		<param name="topicImageOut" value="/FlirA65_flipped" />
+	</node>
+</launch>

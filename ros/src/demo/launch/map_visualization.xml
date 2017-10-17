@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+ <launch>
+   <!--
+     Resolution of original image: 0.019991050501305 meter / pixel
+     We are using 1/3 resolution: 0.059973151503915 meter / pixel
+     We are using 1/10 resolution: 0.19991050501305 meter / pixel
+     Convert commands: convert static_labels.png -resize 5000 static_labels_1_3.png
+                       convert static_labels.png -resize 1500 static_labels_1_10.png
+   -->
+   
+   <node pkg="tf2_ros" type="static_transform_publisher" name="utm_to_utmRGB_tf_broadcaster" args="461869.3424577981 6213615.184808809 63 0 0 0 utm utmRGB" />
+
+   <!-- The rotation of the image with respect to the UTM grid (first mean slope of field, then yaw angle) -->
+   <node pkg="tf2_ros" type="static_transform_publisher" name="utmRGB180yNeg90z_to_static_labels_tf_broadcaster2" args="0 0 0 0 0 -0.021605724789719 utmRGB utmRGB_roll" />
+   <node pkg="tf2_ros" type="static_transform_publisher" name="utmRGB180yNeg90z_to_static_labels_tf_broadcaster3" args="0 0 0 0 0.023289743716797 0 utmRGB_roll utmRGB_roll_pitch" />
+   <node pkg="tf2_ros" type="static_transform_publisher" name="utmRGB180yNeg90z_to_static_labels_tf_broadcaster" args="0 0 0 -0.386743520013729 0 0 utmRGB_roll_pitch utmRGB_roll_pitch_yaw" />
+
+   <!--This transformation rotates the image upside-down-->
+   <node pkg="tf2_ros" type="static_transform_publisher" name="utmRGB_to_utmRGB180y_tf_broadcaster" args="0 0 0 0 3.14159265359 0 utmRGB_roll_pitch_yaw utmRGB180y" />
+   <!--A 180 degrees rotation is introduced here, and a 90 degrees rotation in navsat_odometry_to_gps (I don't actually know why)-->
+   <node pkg="tf2_ros" type="static_transform_publisher" name="utmRGB180y_to_utmRGB180yNeg90z_tf_broadcaster" args="0 0 0 3.14159265359 0 0 utmRGB180y static_labels" />
+
+   <node name="static_map_image_publisher" pkg="image_publisher" type="image_publisher" respawn="true">
+     <param name="image_path" value="$(find demo)/launch/static_labels_1_10.png"/>
+     <param name="topic" value="/ground_truth_image/static_labels"/>
+     <param name="rate" value="0.25"/>
+   </node>
+   
+    <node name="imgRGB_image_publisher" pkg="image_publisher" type="image_publisher" respawn="true">
+     <param name="image_path" value="$(find demo)/launch/imgRGB_1_10.png"/>
+     <param name="topic" value="/ground_truth_image/imgRGB"/>
+     <param name="rate" value="2"/>
+   </node>
+   
+    <node name="imgRGB_nonrotated_image_publisher" pkg="image_publisher" type="image_publisher" respawn="true">
+     <param name="image_path" value="$(find demo)/launch/imgRGB_nonrotated_1_10.png"/>
+     <param name="topic" value="/ground_truth_image/imgRGB_nonrotated"/>
+     <param name="rate" value="0.25"/>
+   </node>
+</launch>

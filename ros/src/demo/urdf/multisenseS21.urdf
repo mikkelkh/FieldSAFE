@@ -1,0 +1,97 @@
+<!-- Simple URDF for Multisense S21 -->
+
+<robot name="multisenseS21">
+
+    <link name="head_root"/>
+
+    <joint name="head_root_joint" type="fixed">
+        <parent link="head_root"/>
+        <child link="head"/>
+    </joint>
+
+    <link name="head">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.57079632679 0 1.57079632679" />
+            <geometry>
+                <mesh filename="package://multisense_description/meshes/multisense_s21.STL"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.9098 0.44314 0.031373 1" />
+            </material>
+        </visual>
+    </link>
+
+
+    <!-- Note the origin of model is 37.3854mm from the rear mounting plane
+         in the x axis -->
+
+    <joint name="left_camera_joint" type="fixed">
+        <origin xyz="0.0 0.105 0.0"/>
+        <parent link="head"/>
+        <child link="left_camera_frame"/>
+    </joint>
+
+    <link name="left_camera_frame"/>
+
+    <joint name="right_camera_joint" type="fixed">
+        <origin xyz="0.0 -0.105 0.0"/>
+        <parent link="head"/>
+        <child link="right_camera_frame"/>
+    </joint>
+
+    <link name="right_camera_frame"/>
+
+    <joint name="left_camera_optical_joint" type="fixed">
+        <origin xyz="0.0052046 0 0" rpy="-1.57079632679 0.0 -1.57079632679"/>
+        <parent link="left_camera_frame"/>
+        <child link="left_camera_optical_frame"/>
+    </joint>
+
+    <link name="left_camera_optical_frame"/>
+
+    <joint name="right_camera_optical_joint" type="fixed">
+        <origin xyz="0.0052046 0 0" rpy="-1.57079632679 0.0 -1.57079632679"/>
+        <parent link="right_camera_frame"/>
+        <child link="right_camera_optical_frame"/>
+    </joint>
+
+    <link name="right_camera_optical_frame"/>
+
+    <joint name="top_left_rear_mount_joint" type="fixed">
+        <origin xyz="-0.0373854 0.1 0.014" rpy="0 0 3.14159"/>
+        <parent link="head"/>
+        <child link="top_left_rear_mount"/>
+    </joint>
+
+    <link name="top_left_rear_mount"/>
+
+    <!--Note the locations of the accel/mag and gyro differ from those shown
+        in CAD. The S21 firmware switches axis on the accel/mag and gyro to
+        match the S7/S7S/SL MultiSense configurations -->
+
+    <joint name="accel_joint" type="fixed">
+        <origin xyz="0.0045 0.029 -0.0135" rpy="0.0 1.57079632679 0.0"/>
+        <parent link="head"/>
+        <child link="accel"/>
+    </joint>
+
+    <link name="accel"/>
+
+    <joint name="mag_joint" type="fixed">
+        <origin xyz="0.0045 0.029 -0.0135" rpy="0.0 1.57079632679 0.0"/>
+        <parent link="head"/>
+        <child link="mag"/>
+    </joint>
+
+    <link name="mag"/>
+
+    <joint name="gyro_joint" type="fixed">
+        <origin xyz="-0.00219539 0.03758 -0.014" rpy="-1.57079632679 0 -1.57079632679"/>
+        <parent link="head"/>
+        <child link="gyro"/>
+    </joint>
+
+    <link name="gyro"/>
+
+</robot>
+

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!-- To playback a rosbag, use: "roslaunch demo demo.launch file:=/path/to/rosbag.bag" -->
+<launch>
+
+  <arg name="bag_rate" default="1.0" />
+  <arg name="bag_start" default="0.0" />
+  <arg name="rviz" default="true" />
+  
+  <param name="use_sim_time" value="true"/>
+  <node pkg="rosbag" type="play" name="player" required="true" args="$(arg file) --clock --rate=$(arg bag_rate) --start=$(arg bag_start)">
+		<remap from="tf" to="tf_old" />
+  </node>
+
+  <!-- Velodyne HDL-32E lidar: Generate point clouds -->
+	<include file="$(find htf_velodyne_32e)/launch/32e_points_postprocessing.launch">
+		<arg name="calibration" value="$(find velodyne_pointcloud)/params/32db.yaml"/>
+	<arg name="min_range" value="2.5" />
+	<arg name="max_range" value="130.0" />
+	</include>
+
+	<!-- Multisense S21 stereo camera: Generate disparity images and point clouds -->
+	<arg name="namespace"  default="Multisense" />
+	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager"/>
+	<node pkg="nodelet" type="nodelet" name="Plus" args="load depth_image_proc/point_cloud_xyzrgb nodelet_manager rgb/camera_info:=/Multisense/left/image_rect_color/camera_info rgb/image_rect_color:=/Multisense/left/image_rect_color depth_registered/image_rect:=/Multisense/depth">
+		<remap from="/depth_registered/points" to="$(arg namespace)/image_points2_color"/>
+	</node>
+
+	<!-- FlirA65 thermal camera: Flip image vertically  -->
+	<node type="mirror_image.py" name="mirror_image" pkg="mirror_image" respawn="true" output="screen">
+		<param name="topicImageIn" value="/FlirA65/image_raw" />
+		<param name="topicImageOut" value="/FlirA65_flipped" />
+	</node>
+
+	<!-- Static transforms -->
+	<include file="$(find demo)/launch/static_tf.xml"/>
+
+	<!-- Pose estimation (localization) -->
+  <include file="$(find demo)/launch/pose_estimation.xml"/>
+
+	<!-- Overlay of static maps in rviz -->
+	<group if="$(arg rviz)">
+		<include file="$(find demo)/launch/map_visualization.xml"/>
+		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find demo)/demo.rviz" respawn="true" />
+	</group>
+
+</launch>

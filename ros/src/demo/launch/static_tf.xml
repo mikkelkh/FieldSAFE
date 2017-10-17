@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+ <launch>
+  
+<!-- BASE LINK -->
+	<!-- Child frame for robot_localization and robot_pose_ekf, should be actually the projection of base_link_mount to the ground.
+		   It is calculated with respect of the height delivered by the velodyne: TODO: SHOULD BE A DYNAMIC TRANSFORM -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="base_tf_broadcaster" args="0 0 .9097 0 0 0  base_link base_link_mount" />
+
+<!-- UPPER LINK FRAME -->
+	<!-- Vector Nav 100 -->
+	<arg name="imu_tf_broadcaster" default="0.39 0.05 0.009 0 0 0.08 upper_link_frame imu_link" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="imu_tf_broadcaster" args="$(arg imu_tf_broadcaster)" />
+
+	<!-- Velodyne frames: velodyne_base_frame TF is an assumption, the velodyne TF is exact -->
+	<arg name="velodyne_tf_broadcaster" default="0 0 .09081 1.570796327 0 0  velodyne_base_frame velodyne" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_base_frame_tf_broadcaster" args=".655 .14 .008 0 0 0  upper_link_frame velodyne_base_frame" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_tf_broadcaster" args="$(arg velodyne_tf_broadcaster)" />
+
+	<!-- Giroptic 360 camera. Orientation is unknown-->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="cam_giroptic_base_frame_tf_broadcaster" args=".655 0.10 -.12 0 0 0  upper_link_frame cam_giroptic_base_frame" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="cam_giroptic_tf_broadcaster" args="0 0 0 0 0 -1.57079632679  cam_giroptic_base_frame cam_giroptic_frame" />
+
+	<!-- GPS. Position and Heading antenna were not aligned completely. Therefore, there is an angular offset of pi/2-atan(4.5cm/68cm)=3.075512532723001 -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="gps_pose_tf_broadcaster" args="0.02 0 0.12 1.57079632679  0 0 upper_link_frame 'RTK_GPS'" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="gps_heading_tf_broadcaster" args="0.02 0 0.12 1.504716327  0 0 upper_link_frame RTK_GPS_HEADING" />
+
+<!-- PITCH LINK FRAME -->
+	<!-- Logitech camera frame TFs -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="pitch_frame_to_cam_logitech_mount_frame_tf_broadcaster" args="0.15 .06 0.03 0 0 0 pitch_link_frame cam_logitech_mount_frame" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="cam_logitech_mount_frame_to_cam_logitech_frame_tf_broadcaster" args="0 0 0 0 0 -1.57079632679 cam_logitech_mount_frame cam_logitech_frame" />
+
+	<!-- Multisense stereo camera. Calibrated with respect to Velodyne -->
+	<!-- Calibration from Lem 24/10/2016. Use this before ROS_TIME=1477384996.5 (466.4 seconds into 2016-10-25-10-35-30.bag). After, use Calibration from Aarhus, CVLab 27/04/2017 (see below) -->
+	<!--<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_to_cam_stereo_left_frame" args="0.0116 0.3524 -0.2054 -1.5228 0.0013 -1.7596 velodyne cam_stereo_left_frame" />-->
+	<!-- Calibration from Aarhus, CVLab 27/04/2017 -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_to_cam_stereo_left_frame" args="0.0120 0.4271 -0.2948 -1.5166 0.0103 -1.7884 velodyne cam_stereo_left_frame" />
+
+	<!-- Flir thermal camera. Calibrated with respect to Multisense stereo camera.-->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="cam_stereo_left_frame_to_cam_thermal_frame" args="-0.000088823886270   0.078651006269791   0.045908800332039  -0.011711538278236   0.009554798527770  -0.008121342812338 cam_stereo_left_frame cam_thermal_frame" />
+
+<!-- BASE LINK FRAME -->
+	<!-- Delphi radar -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="base_link_frame_to_radar_frame" args="-0.2 0.03 -0.09 1.57079632679 0 0 base_link_frame radar_frame" />
+
+
+
+<!-- Define sensor frame model and start the static tfs --> 
+	<!-- Multisense URDF and transforms -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="cam_stereo_left_frame_to_multisense_left_camera_optical_frame" args="0.105 -0.000 -0.005 1.571 -1.571 0.000 cam_stereo_left_frame Multisense/head_root" />
+	<arg name="namespace"  default="Multisense" />
+	<group ns="Multisense">
+		<param name="robot_description" textfile="$(find demo)/urdf/multisenseS21.urdf" />
+		<node pkg="robot_state_publisher" type="state_publisher" name="$(arg namespace)_state_publisher">
+		  <param name="publish_frequency" type="double" value="50.0" />
+		  <remap from="joint_states" to="/joint_states" />
+		  <param name="tf_prefix" value="/$(arg namespace)" />
+		</node>
+	</group>
+
+	<!-- Sensor platform URDF and transforms -->
+	<arg name="gui" default="False" />
+	<arg name="model" />
+	<!--param name="robot_description" textfile="$(find transforms)/sensorFrame.urdf" /-->
+	<param name="robot_description" textfile="$(find demo)/urdf/sensorFrame.urdf" />
+	<param name="use_gui" value="$(arg gui)"/>
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+	</node>
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher">
+		<param name="use_tf_static" value="true" />
+		<param name="publish_frequency" value="10" />
+	</node>
+	
+
+
+ </launch>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<launch>
+<!-- 1) navsat_transform_node is used to produce odometry from GPS coordinates (only x,y,z position) -->
+<node pkg="robot_localization" type="navsat_transform_node" name="navsat_to_gps_odometry" respawn="false" output="screen">
+  <param name="frequency" value="30"/>
+	<param name="yaw_offset" value="1.570796327"/>
+  <param name="zero_altitude" value="false"/>
+  <param name="broadcast_utm_transform" value="false"/>
+  <param name="publish_filtered_gps" value="false"/>
+  <param name="use_odometry_yaw" value="false"/>
+  <param name="wait_for_datum" value="false"/>
+  <param name="world_frame" value="odom"/>
+  <!-- Input -->
+  <remap from="/gps/fix" to="Trimble_rtk_gps/nav_sat_fix"/>
+  <remap from="/imu/data" to="Trimble_rtk_gps/imu"/>
+  <!-- Output -->
+  <remap from="/odometry/gps" to="/odometry/gps"/>
+</node>
+
+<!-- 2) robot_localization provides a global map by fusing all sensors (IMU + GPS position and heading) -->
+<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_map" clear_params="true" output="screen" >
+	<param name="frequency" value="30"/>
+	<param name="sensor_timeout" value="2.0"/>
+	<param name="two_d_mode" value="false"/>
+	<param name="transform_time_offset" value="0"/>
+	<param name="print_diagnostics" value="false"/>
+	<param name="smooth_lagged_data" value="false" />
+	<param name="history_length" value="0" />
+
+	<!-- GPS positions -->
+	<param name="odom0" value="/odometry/gps"/>
+	<rosparam param="odom0_config">[true, true, true,
+                                  false, false, false,
+                                  false,  false, false,
+                                  false, false, false,
+                                  false, false, false]</rosparam>
+	<param name="odom0_differential" value="false"/>
+	<param name="odom0_relative" value="false"/>
+	<param name="odom0_queue_size" value="1"/>
+	<param name="odom0_nodelay" value="true"/>
+
+	<!-- GPS "IMU" -->
+	<param name="imu0" value="Trimble_rtk_gps/imu"/>
+	<rosparam param="imu0_config">[false, false, false,
+                                 false,  false,  true,
+                                 false, false, false,
+                                 false,  false,  false,
+                                 false,  false,  false]</rosparam>
+	<param name="imu0_differential" value="false"/>
+	<param name="imu0_relative" value="false"/>
+	<param name="imu0_remove_gravitational_acceleration" value="false"/>
+	<param name="imu0_queue_size" value="1"/>
+	<param name="imu0_nodelay" value="true"/>
+
+	<!-- IMU -->
+	<param name="imu1" value="/VectorNav_IMU/imu"/>
+	<rosparam param="imu1_config">[false, false, false,
+                                 true,  true,  false,
+                                 false, false, false,
+                                 false,  false,  false,
+                                 false,  false,  false]</rosparam>
+	<param name="imu1_differential" value="false"/>
+	<param name="imu1_relative" value="false"/>
+	<param name="imu1_remove_gravitational_acceleration" value="true"/>
+	<param name="imu1_queue_size" value="1"/>
+	<param name="imu1_nodelay" value="false"/>
+
+  <param name="map_frame" value="map"/>
+  <param name="odom_frame" value="odom"/>
+  <param name="base_link_frame" value="base_link"/>
+  <param name="world_frame" value="odom"/>
+</node>
+
+<!-- Transform the filtered odometry pose back to GPS coordinates -->
+<node pkg="robot_localization" type="navsat_transform_node" name="navsat_odometry_to_gps" respawn="true">
+
+    <param name="frequency" value="30"/>    
+    <param name="delay" value="0"/>
+    <param name="magnetic_declination_radians" value="0"/>
+    <param name="yaw_offset" value="1.570796327"/>
+    <param name="zero_altitude" value="false"/>
+    <param name="broadcast_utm_transform" value="true"/>
+    <param name="publish_filtered_gps" value="true"/>
+    <param name="use_odometry_yaw" value="true"/>
+    <param name="wait_for_datum" value="false"/>
+    <!-- INPUT -->    
+    <remap from="/odometry/filtered" to="/odometry/filtered"/>
+    <remap from="/gps/fix" to="/Trimble_rtk_gps/nav_sat_fix"/>
+    <!-- OUTPUT -->
+    <remap from="/gps/filtered" to="/gps/filtered/utm"/>
+    <remap from="/odometry/gps" to="/gps/filtered/odom"/>
+</node>
+
+</launch>

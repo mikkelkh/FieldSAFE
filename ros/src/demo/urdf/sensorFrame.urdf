@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<robot name="materials">
+
+  <link name="base_link_mount">
+    <visual>
+      <geometry>
+        <box size=".04 .2 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 .02"/>
+      <material name="gray">
+        <color rgba=".7 .7 .7 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="base_link_frame">
+    <visual>
+      <geometry>
+        <box size=".72 .04 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 .02"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="base_mount_to_base_frame" type="fixed">
+    <parent link="base_link_mount"/>
+    <child link="base_link_frame"/>
+    <origin rpy="0 0 -1.57079632679" xyz=".04 0 0"/>
+  </joint>
+
+  <link name="right_link_frame">
+    <visual>
+      <geometry>
+        <box size=".04 .04 2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz=".02 0 0"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+  
+  <link name="pc_box_frame">
+    <visual>
+      <geometry>
+        <box size=".50 -.255 .50"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 -.1275 0"/>
+      <material name="darkgray">
+        <color rgba=".5 .5 .5 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="lower_link_frame_to_pc_box_frame" type="fixed">
+    <parent link="base_link_frame"/>
+    <child link="pc_box_frame"/>
+    <origin xyz="0 -.02 .355"/>
+  </joint>
+
+  <joint name="base_to_right_frame" type="fixed">
+    <parent link="base_link_frame"/>
+    <child link="right_link_frame"/>
+    <origin xyz=".36 0 .375"/>
+  </joint>
+
+    <link name="left_link_frame">
+    <visual>
+      <geometry>
+        <box size=".04 .04 2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-.02 0 0"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_left_frame" type="fixed">
+    <parent link="base_link_frame"/>
+    <child link="left_link_frame"/>
+    <origin xyz="-.36 0 .375"/>
+  </joint>
+
+  <link name="upper_link_frame">
+    <visual>
+      <geometry>
+        <box size=".72 .04 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz=".36 0 -.02"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_upper_frame" type="fixed">
+    <parent link="base_link_frame"/>
+    <child link="upper_link_frame"/>
+    <origin rpy="0.00 0.00000 0.000000" xyz="-.36 0 1.375"/> 
+  </joint>
+
+  <link name="lower_link_frame">
+    <visual>
+      <geometry>
+        <box size=".72 .04 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz=".36 0 -.02"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_lower_frame" type="fixed">
+    <parent link="base_link_frame"/>
+    <child link="lower_link_frame"/>
+    <origin xyz="-.36 0 -.585"/>
+  </joint>
+
+	<link name="left_pitch_link_frame_rotator">
+    <visual>
+      <geometry>
+        <box size=".04 .04 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0.02 -0.02 0"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="left_frame_to_left_pitch_frame_rotator" type="fixed">
+    <parent link="left_link_frame"/>
+    <child link="left_pitch_link_frame_rotator"/>
+    <origin xyz="0 .06 .72"/>
+  </joint>
+
+
+  <link name="left_pitch_link_frame">
+    <visual>
+      <geometry>
+        <box size=".04 .025 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0.02 0.0125 0"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="left_pitch_link_frame_rotator_to_left_pitch_link_frame" type="fixed">
+    <parent link="left_pitch_link_frame_rotator"/>
+    <child link="left_pitch_link_frame"/>
+    <origin rpy="-0.218166156 0 0" xyz="0 0 0"/> <!-- -0.218166156 -->
+  </joint>
+
+  <link name="pitch_link_frame">
+    <visual>
+      <geometry>
+        <box size=".72 .04 .04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz=".36 0 -.02"/>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <joint name="left_pitch_frame_to_pitch_frame" type="fixed">
+    <parent link="left_pitch_link_frame"/>
+    <child link="pitch_link_frame"/>
+    <origin xyz="0 .045 0.02"/>
+  </joint>
+
+</robot>
+
