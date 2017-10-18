@@ -16,25 +16,25 @@ Below, installations instructions for all necessary dependencies are given.
 
 * Install the following additional packages:
     ```sh
-    $ sudo apt-get install ros-kinetic-robot-localization 
-    $ sudo apt-get install ros-kinetic-geographic-msgs
-    $ sudo apt-get install libpcap-dev
+    sudo apt-get install ros-kinetic-robot-localization 
+    sudo apt-get install ros-kinetic-geographic-msgs
+    sudo apt-get install libpcap-dev
     ```
 * Clone and build this repository
     ```sh
-    $ git clone https://github.com/mikkelkh/FieldSAFE
-    $ cd FieldSAFE
-    $ git submodule update --init --recursive
-    $ cd ros
-    $ catkin_make
+    git clone https://github.com/mikkelkh/FieldSAFE
+    cd FieldSAFE
+    git submodule update --init --recursive
+    cd ros
+    catkin_make
     ```
 * Environment Setup
     ```sh
-    $ source devel/setup.bash
+    source devel/setup.bash
     ```
 * Download a 1 minute example bag with sensor data: [2016-10-25-11-41-21_example.bag](https://vision.eng.au.dk/data/FieldSAFE/2016-10-25-11-41-21_example.bag)
 * Run the demo
     ```sh
-    $ roslaunch demo demo.launch file:=/path/to/2016-10-25-11-41-21_example.bag
+    roslaunch demo demo.launch file:=/path/to/2016-10-25-11-41-21_example.bag
     ```
 * Download more data from: [https://vision.eng.au.dk/fieldsafe/](https://vision.eng.au.dk/fieldsafe/)
