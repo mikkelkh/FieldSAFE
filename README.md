@@ -6,6 +6,20 @@ Further, ground truth GPS annotations for all static and dynamic obstacles are c
 
 For more information, visit the FieldSAFE website: [https://vision.eng.au.dk/fieldsafe/](https://vision.eng.au.dk/fieldsafe/)
 
+## Citation
+If you use this dataset in your research or elsewhere, please cite/reference the following paper:
+
+[FieldSAFE: Dataset for Obstacle Detection in Agriculture](https://arxiv.org/abs/1709.03526)
+
+```sh
+@article{kragh2017fieldsafe,
+  title={FieldSAFE: Dataset for Obstacle Detection in Agriculture},
+  author={Kragh, Mikkel Fly and Christiansen, Peter and Laursen, Morten Stigaard and Larsen, Morten and Steen, Kim Arild and Green, Ole and Karstoft, Henrik and J{\o}rgensen, Rasmus Nyholm},
+  journal={arXiv preprint arXiv:1709.03526},
+  year={2017}
+}
+```
+
 ## Installation Instructions
 The FieldSAFE dataset and software has been tested with Ubuntu 16.04 and ROS Kinetic, but may work with other Linux distributions and newer ROS distributions.
 Below, installations instructions for all necessary dependencies are given.
