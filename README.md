@@ -32,9 +32,14 @@ Below, installations instructions for all necessary dependencies are given.
     ```sh
     source devel/setup.bash
     ```
-* Download a 1 minute example bag with sensor data: [2016-10-25-11-41-21_example.bag](https://vision.eng.au.dk/data/FieldSAFE/2016-10-25-11-41-21_example.bag)
+* Download a 1 minute example bag with sensor data: 
+
+    [2016-10-25-11-41-21_example.bag](https://vision.eng.au.dk/data/FieldSAFE/2016-10-25-11-41-21_example.bag)
+
 * Run the demo
     ```sh
     roslaunch demo demo.launch file:=/path/to/2016-10-25-11-41-21_example.bag
     ```
-* Download more data from: [https://vision.eng.au.dk/fieldsafe/](https://vision.eng.au.dk/fieldsafe/)
+* Download more data from: 
+
+    [https://vision.eng.au.dk/fieldsafe/](https://vision.eng.au.dk/fieldsafe/)
