@@ -5,7 +5,8 @@ project(htf_delphi_esr)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  std_msgs
+	roscpp
+  	std_msgs
 	message_generation
 )
 
@@ -121,11 +122,13 @@ include_directories(
 # add_library(htf_delphi_esr
 #   src/${PROJECT_NAME}/htf_delphi_esr.cpp
 # )
+add_executable(radar_delphi_visualization_node src/radar_delphi_visualization_node.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 # add_dependencies(htf_delphi_esr ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(radar_delphi_visualization_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} msgs_gencpp sensor_msgs_gencpp)
 
 ## Declare a C++ executable
 # add_executable(htf_delphi_esr_node src/htf_delphi_esr_node.cpp)
@@ -135,9 +138,9 @@ include_directories(
 # add_dependencies(htf_delphi_esr_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(htf_delphi_esr_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(radar_delphi_visualization_node
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

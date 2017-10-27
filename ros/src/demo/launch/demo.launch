@@ -31,6 +31,10 @@
 		<param name="topicImageOut" value="/FlirA65_flipped" />
 	</node>
 
+	<!-- Delphi ESR radar: Visualize messages  -->
+	<node pkg="htf_delphi_esr" name="radar_delphi_visualization_node"  type="radar_delphi_visualization_node" output="screen">
+	</node>
+
 	<!-- Static transforms -->
 	<include file="$(find demo)/launch/static_tf.xml"/>
 

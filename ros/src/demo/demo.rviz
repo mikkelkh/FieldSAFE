@@ -54,6 +54,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        Delphi_ESR:
+          Value: true
         Multisense/accel:
           Value: true
         Multisense/gyro:
@@ -112,8 +114,6 @@ Visualization Manager:
           Value: false
         pitch_link_frame:
           Value: false
-        radar_frame:
-          Value: true
         right_link_frame:
           Value: false
         static_labels:
@@ -146,6 +146,8 @@ Visualization Manager:
           base_link:
             base_link_mount:
               base_link_frame:
+                Delphi_ESR:
+                  {}
                 left_link_frame:
                   left_pitch_link_frame_rotator:
                     left_pitch_link_frame:
@@ -156,8 +158,6 @@ Visualization Manager:
                 lower_link_frame:
                   {}
                 pc_box_frame:
-                  {}
-                radar_frame:
                   {}
                 right_link_frame:
                   {}
@@ -489,6 +489,14 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /Delphi_ESR/markers
+      Name: RadarDetections
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -528,10 +536,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.53039813
+      Pitch: 1.35539818
       Target Frame: base_link
       Value: XYOrbit (rviz)
-      Yaw: 6.08858347
+      Yaw: 0.470397949
     Saved: ~
 Window Geometry:
   Displays:
