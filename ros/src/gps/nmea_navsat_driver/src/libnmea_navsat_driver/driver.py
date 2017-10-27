@@ -59,7 +59,6 @@ class RosNMEADriver(object):
         self.gps_time = None
 
 	self.gps_covariance_pos = rospy.get_param('~gps_covariance_pos', [0.0, 0.0, 1.0])
-	print("Se her: " + str(self.gps_covariance_pos))
 
     # Returns True if we successfully did something with the passed in
     # nmea_string

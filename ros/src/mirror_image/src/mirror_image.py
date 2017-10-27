@@ -18,11 +18,11 @@ nodeName = rospy.get_name()
 
 # Name of input topics from launch-file
 topic_image_in = rospy.get_param(nodeName+'/topicImageIn', nodeName+'/UnknownInputTopic') 
-print("topic_image_in",topic_image_in)
+#print("topic_image_in",topic_image_in)
 
 # Name of output topics from launch-file
 topic_image_out = rospy.get_param(nodeName+'/topicImageOut', nodeName+'/UnknownOutputTopic')
-print("topic_image_out",topic_image_out)
+#print("topic_image_out",topic_image_out)
 
 # Publishers
 pub_image = rospy.Publisher(topic_image_out, Image , queue_size=0)
