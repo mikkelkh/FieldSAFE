@@ -33,7 +33,9 @@
 	<!-- Calibration from Lem 24/10/2016. Use this before ROS_TIME=1477384996.5 (466.4 seconds into 2016-10-25-10-35-30.bag). After, use Calibration from Aarhus, CVLab 27/04/2017 (see below) -->
 	<!--<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_to_cam_stereo_left_frame" args="0.0116 0.3524 -0.2054 -1.5228 0.0013 -1.7596 velodyne cam_stereo_left_frame" />-->
 	<!-- Calibration from Aarhus, CVLab 27/04/2017 -->
-	<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_to_cam_stereo_left_frame" args="0.0120 0.4271 -0.2948 -1.5166 0.0103 -1.7884 velodyne cam_stereo_left_frame" />
+	<!--<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_to_cam_stereo_left_frame" args="0.0120 0.4271 -0.2948 -1.5166 0.0103 -1.7884 velodyne cam_stereo_left_frame" />-->
+	<!-- Calibration from Lem 24/10/2016 after crash on beginning of 2016-10-25-11-09-42.bag -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_to_cam_stereo_left_frame" args="-0.062756136059761 0.436231642961502 -0.318481832742691 -1.530826981634158 0.001705724142480 -1.817841742321206 velodyne cam_stereo_left_frame" />
 
 	<!-- Flir thermal camera. Calibrated with respect to Multisense stereo camera.-->
 	<node pkg="tf2_ros" type="static_transform_publisher" name="cam_stereo_left_frame_to_cam_thermal_frame" args="-0.000088823886270   0.078651006269791   0.045908800332039  -0.011711538278236   0.009554798527770  -0.008121342812338 cam_stereo_left_frame cam_thermal_frame" />
