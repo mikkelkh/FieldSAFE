@@ -1,0 +1,21 @@
+image_width: 640
+image_height: 512
+camera_name: Flir A65, 13 mm lens
+intrinsics: 
+  rows: 3
+  cols: 3
+  data: [772.406486916380, 0, 322.666731064411, 0, 772.827995880929, 250.662109186101, 0, 0, 1]
+distortion_model: plumb_bob
+distortion_coefficients: 
+  rows: 1
+  cols: 5
+  data: [-0.0496131043442438, 0.363241804845617, 0, 0, 0]
+rectification_matrix: 
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix: 
+  rows: 3
+  cols: 4
+  data: [772.406486916380, 0, 322.666731064411, 0, 0, 772.827995880929, 250.662109186101, 0, 0, 0, 1, 0]
+frame_id: cam_thermal_frame
