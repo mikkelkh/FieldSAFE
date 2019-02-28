@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!-- To playback a rosbag, use: "roslaunch demo demo.launch file:=/path/to/rosbag.bag" -->
+<launch>
+
+  <arg name="bag_rate" default="0.5" />
+  <arg name="bag_start" default="10.0" />
+  <arg name="rviz" default="true" />
+  <arg name="file" default="/home/tambet/FieldSAFE/2016-10-25-11-41-21_example.bag" />
+  
+  <param name="use_sim_time" value="true"/>
+  <node pkg="rosbag" type="play" name="player" required="true" args="$(arg file) --clock --rate=$(arg bag_rate) --start=$(arg bag_start)">
+		<remap from="tf" to="tf_old" />
+  </node>
+
+  <!-- Velodyne HDL-32E lidar: Generate point clouds -->
+	<include file="$(find htf_velodyne_32e)/launch/32e_points_postprocessing.launch">
+		<arg name="calibration" value="$(find velodyne_pointcloud)/params/32db.yaml"/>
+	<arg name="min_range" value="2.5" />
+	<arg name="max_range" value="130.0" />
+	</include>
+
+	<!-- Multisense S21 stereo camera: Generate disparity images and point clouds -->
+	<arg name="namespace"  default="Multisense" />
+	<node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager"/>
+	<node pkg="nodelet" type="nodelet" name="Plus" args="load depth_image_proc/point_cloud_xyzrgb nodelet_manager rgb/camera_info:=/Multisense/left/image_rect_color/camera_info rgb/image_rect_color:=/Multisense/left/image_rect_color depth_registered/image_rect:=/Multisense/depth">
+		<remap from="/depth_registered/points" to="$(arg namespace)/image_points2_color"/>
+	</node>
+
+	<!-- FlirA65 thermal camera: Flip image vertically and horizontally  -->
+	<node type="mirror_image.py" name="mirror_image" pkg="mirror_image" respawn="true" output="screen">
+		<param name="topicImageIn" value="/FlirA65/image_raw" />
+		<param name="topicImageOut" value="/FlirA65_flipped/image_raw" />
+	</node>
+
+    <!-- FlirA65 thermal camera info  -->
+    <node type="camera_info_publisher.py" name="camera_info_publisher" pkg="camera_info_publisher" respawn="true" output="screen">
+        <remap from="camera_info" to="/FlirA65_flipped/camera_info"/>
+    </node>
+
+	<!-- Delphi ESR radar: Visualize messages  -->
+	<node pkg="htf_delphi_esr" name="radar_delphi_visualization_node"  type="radar_delphi_visualization_node" output="screen">
+	</node>
+
+    <!-- Visualize dynamic markers (humans) -->
+    <node type="dynamic_visualizer.py" name="dynamic_visualizer" pkg="ground_truth" respawn="true" output="screen">
+    </node>
+
+    <!-- Visualize static markers -->
+    <node type="static_visualizer.py" name="static_visualizer" pkg="ground_truth" respawn="true" output="screen">
+    </node>
+
+	<!-- Static transforms -->
+	<include file="$(find demo)/launch/static_tf.xml"/>
+
+	<!-- Pose estimation (localization) -->
+  <include file="$(find demo)/launch/pose_estimation.xml"/>
+
+	<!-- Overlay of static maps in rviz -->
+	<group if="$(arg rviz)">
+		<include file="$(find demo)/launch/map_visualization.xml"/>
+		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find demo)/demo_markers.rviz" respawn="true" />
+	</group>
+
+</launch>
