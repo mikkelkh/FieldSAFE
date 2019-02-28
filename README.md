@@ -50,9 +50,13 @@ Below, installations instructions for all necessary dependencies are given.
 
     [2016-10-25-11-41-21_example.bag](https://vision.eng.au.dk/data/FieldSAFE/2016-10-25-11-41-21_example.bag)
 
-* Run the demo
+* Run the original demo
     ```sh
     roslaunch demo demo.launch file:=/path/to/2016-10-25-11-41-21_example.bag
+    ```
+    or this updated demo by [@tambetm](https://github.com/tambetm) including visualization of ground truth obstacles:
+    ```sh
+    roslaunch demo demo_markers.launch file:=/path/to/2016-10-25-11-41-21_example.bag
     ```
 * Download more data from: 
 
