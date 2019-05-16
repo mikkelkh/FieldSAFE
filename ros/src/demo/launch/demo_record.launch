@@ -47,4 +47,6 @@
 		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find demo)/demo.rviz" respawn="true" />
 	</group>-->
 
+<node pkg="rosbag" type="record" name="recorder" required="true" args="/velodyne_points /Multisense/left/image_rect_color /Multisense/image_points2_color -O $(arg file)_recorded.bag"></node>
+
 </launch>

@@ -1,0 +1,8 @@
+<launch>
+  <param name="use_sim_time" value="true"/>
+  <node pkg="rosbag" type="play" name="rosbag" required="true" args="$(arg file) --clock --rate=0.5"/>
+  <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen" cwd="ROS_HOME">
+    <remap from="image" to="/Multisense/left/image_rect_color"/>
+    <param name="output_folder" value="$(arg output_folder)"/>
+  </node>
+</launch>
