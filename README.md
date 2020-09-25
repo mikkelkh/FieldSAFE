@@ -1,5 +1,7 @@
 # FieldSAFE - Dataset for Obstacle Detection in Agriculture
 
+[![Watch the video](https://vision.eng.au.dk/wp-content/uploads/2020/09/fieldsafe_youtube.png)](https://www.youtube.com/watch?v=YXz1zdaFX0E)
+
 This repository contains the necessary software for utilizing the FieldSAFE dataset.
 Software and example usage scripts are available in the folder "ros".
 Further, ground truth GPS annotations for all static and dynamic obstacles are contained in the folder "ground_truth".
