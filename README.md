@@ -1,6 +1,6 @@
 # FieldSAFE - Dataset for Obstacle Detection in Agriculture
 
-[![Watch the video](https://vision.eng.au.dk/wp-content/uploads/2020/09/fieldsafe_youtube.png)](https://www.youtube.com/watch?v=YXz1zdaFX0E)
+[![Watch the video](https://img.youtube.com/vi/YXz1zdaFX0E/maxresdefault.jpg)](https://www.youtube.com/watch?v=YXz1zdaFX0E)
 
 This repository contains the necessary software for utilizing the FieldSAFE dataset.
 Software and example usage scripts are available in the folder "ros".
