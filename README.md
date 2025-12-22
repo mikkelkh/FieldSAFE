@@ -6,7 +6,8 @@ This repository contains the necessary software for utilizing the FieldSAFE data
 Software and example usage scripts are available in the folder "ros".
 Further, ground truth GPS annotations for all static and dynamic obstacles are contained in the folder "ground_truth".
 
-For more information, visit the FieldSAFE website: [https://vision.eng.au.dk/fieldsafe/](https://vision.eng.au.dk/fieldsafe/)
+For more information, visit the FieldSAFE website: 
+[https://theailab.dk/fieldsafe/](https://theailab.dk/fieldsafe/)
 
 ## Citation
 If you use this dataset in your research or elsewhere, please cite/reference the following paper:
